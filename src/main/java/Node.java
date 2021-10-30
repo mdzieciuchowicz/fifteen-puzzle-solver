@@ -1,3 +1,4 @@
+import Exceptions.WrongMoveException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -5,17 +6,31 @@ import java.util.List;
 
 public class Node {
     private List<Node> children;
-    private Node parent;
-    private State currentState;
-    private String movesHistory;
+    private final Node parent;
+    private final State currentState;
 
-    public Node(Node parent, String movesHistory) {
+    public Node(Node parent, Table table, int treeDepth, String movesHistory) {
         this.parent = parent;
-        this.movesHistory = movesHistory;
+        this.currentState = new State(table, treeDepth, movesHistory);
     }
 
     public void appendChild(Node child) {
         this.children.add(child);
+    }
+
+    public void move(Direction direction) {
+        try {
+            // Zamien wartosci w tablicy i dodaj ruch do historii
+            Table afterMove = this.getCurrentState().getTable().move(direction);
+            String newHistory = this.getCurrentState().getMovesHistory() + direction.toString();
+
+            Node child = new Node(this, afterMove, this.getCurrentState().getTreeDepth() + 1, newHistory);
+            this.appendChild(child);
+
+        } catch (WrongMoveException e) {
+            System.out.println(e.toString());
+            System.out.println("Dla tablicy o stanie: " + this.getCurrentState().getTable().getTableAsString());
+        }
     }
 
     public List<Node> getChildren() {
@@ -28,10 +43,6 @@ public class Node {
 
     public State getCurrentState() {
         return currentState;
-    }
-
-    public String getMovesHistory() {
-        return movesHistory;
     }
 
     @Override

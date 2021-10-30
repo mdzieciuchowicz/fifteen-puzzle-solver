@@ -6,5 +6,21 @@ public class App {
         System.out.println(table.getTableAsString());
         System.out.println("Rows: " + table.getRows());
         System.out.println("Cols: " + table.getCols());
+        System.out.println("ZeroIndex: " + table.getZeroIndex());
+        System.out.println("ZeroCol: " + table.getZeroCol());
+        System.out.println("ZeroRow: " + table.getZeroRow());
+
+        try {
+            Table newMove = table.move(Direction.L);
+            System.out.println(newMove.getTableAsString());
+            System.out.println("ZeroIndex: " + newMove.getZeroIndex());
+            System.out.println("ZeroCol: " + newMove.getZeroCol());
+            System.out.println("ZeroRow: " + newMove.getZeroRow());
+
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
     }
 }
