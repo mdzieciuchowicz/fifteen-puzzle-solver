@@ -1,27 +1,19 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
         System.out.println("hello world");
 
-        Table table = new Table("D:\\Pobrane\\4x4_01_00001.txt");
+        Table table = new Table("D:\\Pobrane\\folder_na_ten_gowno_program\\4x4_08_00442.txt");
         System.out.println(table.getTableAsString());
-        System.out.println("Rows: " + table.getRows());
-        System.out.println("Cols: " + table.getCols());
-        System.out.println("ZeroIndex: " + table.getZeroIndex());
-        System.out.println("ZeroCol: " + table.getZeroCol());
-        System.out.println("ZeroRow: " + table.getZeroRow());
-        System.out.println(table.checkIfSolved());
 
-        try {
-            Table newMove = table.move(Direction.D);
-            System.out.println(newMove.getTableAsString());
-            System.out.println("ZeroIndex: " + newMove.getZeroIndex());
-            System.out.println("ZeroCol: " + newMove.getZeroCol());
-            System.out.println("ZeroRow: " + newMove.getZeroRow());
-            System.out.println(newMove.checkIfSolved());
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+        Node root = new Node(null, table, 0, "");
+        Solver bfs = new BFS(root);
+        Node solvingNode = bfs.solve();
+        System.out.println(solvingNode.getCurrentState().getMovesHistory());
+        System.out.println(solvingNode.getCurrentState().getTreeDepth());
+        System.out.println(((BFS) bfs).getNodeCounter());
 
     }
 }

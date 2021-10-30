@@ -100,7 +100,7 @@ public class Table {
 
     public Table move(Direction direction) throws WrongMoveException {
         // Nalezy wykonac kopie, aby zwrocic zmodyfikowany stan tablicy nienaruszając obecnego
-        Table tmp = this.clone();
+        Table before = this.clone();
 
         if (direction == Direction.U) {
             if (this.zeroRow == 0) {
@@ -115,7 +115,7 @@ public class Table {
         }
 
         if (direction == Direction.D) {
-            if (this.zeroRow == this.rows - 1) {
+            if (this.zeroRow == (this.rows - 1)) {
                 throw new WrongMoveException("Cannot move down");
             } else {
                 this.table[zeroIndex] = this.table[this.zeroIndex + this.cols];
@@ -139,7 +139,7 @@ public class Table {
         }
 
         if (direction == Direction.R) {
-            if (this.zeroCol == this.cols - 1) {
+            if (this.zeroCol == (this.cols - 1)) {
                 throw new WrongMoveException("Cannot move right");
             } else {
                 this.table[zeroIndex] = this.table[this.zeroIndex + 1];
@@ -151,13 +151,17 @@ public class Table {
         }
 
         // Przywróć poprzedni stan tablicy i zwróć zapisaną kopię
-        Table clone = this.clone();
-        this.table = tmp.table;
-        this.zeroIndex = tmp.zeroIndex;
-        this.zeroCol = tmp.zeroCol;
-        this.zeroRow = tmp.zeroRow;
+        Table after = this.clone();
+        this.table = before.table;
+        this.zeroIndex = before.zeroIndex;
+        this.zeroCol = before.zeroCol;
+        this.zeroRow = before.zeroRow;
+//
+//        System.out.println("ZeroIndex: " + this.getZeroIndex());
+//        System.out.println("ZeroCol: " + this.getZeroCol());
+//        System.out.println("ZeroRow: " + this.getZeroRow());
 
-        return clone;
+        return after;
     }
 
     public Boolean checkIfSolved() {
@@ -210,6 +214,6 @@ public class Table {
     }
 
     public Table clone() {
-        return new Table(this.table, this.rows, this.cols, this.zeroIndex, this.zeroRow, this.zeroCol);
+        return new Table(this.table.clone(), this.rows, this.cols, this.zeroIndex, this.zeroRow, this.zeroCol);
     }
 }

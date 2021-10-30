@@ -2,10 +2,11 @@ import Exceptions.WrongMoveException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    private List<Node> children;
+    private List<Node> children = new ArrayList<>();
     private final Node parent;
     private final State currentState;
 
@@ -15,21 +16,26 @@ public class Node {
     }
 
     public void appendChild(Node child) {
+        if (child == null) {
+            return;
+        }
         this.children.add(child);
     }
 
-    public void move(Direction direction) {
+    public Node move(Direction direction) {
         try {
             // Zamien wartosci w tablicy, dodaj ruch do historii a na końcu dodaj jako dziecko
             Table afterMove = this.getCurrentState().getTable().move(direction);
             String newHistory = this.getCurrentState().getMovesHistory() + direction.toString();
 
             Node child = new Node(this, afterMove, this.getCurrentState().getTreeDepth() + 1, newHistory);
-            this.appendChild(child);
+            this.children.add(child);
+            return child;
 
         } catch (WrongMoveException e) {
-            System.out.println(e.toString());
-            System.out.println("Dla tablicy o stanie: " + this.getCurrentState().getTable().getTableAsString());
+//            System.out.println(e.toString());
+//            System.out.println("Dla tablicy o stanie: " + this.getCurrentState().getTable().getTableAsString());
+            return null;
         }
     }
 
