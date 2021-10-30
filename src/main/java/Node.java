@@ -20,7 +20,7 @@ public class Node {
 
     public void move(Direction direction) {
         try {
-            // Zamien wartosci w tablicy i dodaj ruch do historii
+            // Zamien wartosci w tablicy, dodaj ruch do historii a na końcu dodaj jako dziecko
             Table afterMove = this.getCurrentState().getTable().move(direction);
             String newHistory = this.getCurrentState().getMovesHistory() + direction.toString();
 
@@ -45,6 +45,9 @@ public class Node {
         return currentState;
     }
 
+
+    // To będzie wykorzystywane do porównywania nodów - czy node o innym adresie w pamięci nie wystąpił już wcześniej w algorytmie -
+    // - to znaczy czy nie ma takiej samej kolejności w Table
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -9,14 +9,15 @@ public class App {
         System.out.println("ZeroIndex: " + table.getZeroIndex());
         System.out.println("ZeroCol: " + table.getZeroCol());
         System.out.println("ZeroRow: " + table.getZeroRow());
+        System.out.println(table.checkIfSolved());
 
         try {
-            Table newMove = table.move(Direction.L);
+            Table newMove = table.move(Direction.D);
             System.out.println(newMove.getTableAsString());
             System.out.println("ZeroIndex: " + newMove.getZeroIndex());
             System.out.println("ZeroCol: " + newMove.getZeroCol());
             System.out.println("ZeroRow: " + newMove.getZeroRow());
-
+            System.out.println(newMove.checkIfSolved());
 
         } catch (Exception e) {
             System.out.println(e.toString());

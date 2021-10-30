@@ -3,7 +3,7 @@ import Exceptions.WrongMoveException;
 import java.io.File;
 import java.util.*;
 
-public class Table implements Cloneable{
+public class Table {
     private int[] table;
     private int rows;
     private int cols;
@@ -13,6 +13,9 @@ public class Table implements Cloneable{
     private int zeroRow = -1;
     private int zeroCol = -1;
 
+
+
+    // Wygeneruj tablicę startową
     public Table(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -20,10 +23,12 @@ public class Table implements Cloneable{
         this.generatePuzzle();
     }
 
+    // Pobierz tablicę startową z pliku
     public Table(String filename) {
         readPuzzleFromFile(filename);
     }
 
+    // Konstruktor na potrzeby clone()
     private Table(int[] table, int rows, int cols, int zeroIndex, int zeroRow, int zeroCol) {
         this.table = table;
         this.rows = rows;
@@ -91,6 +96,8 @@ public class Table implements Cloneable{
         }
     }
 
+
+
     public Table move(Direction direction) throws WrongMoveException {
         // Nalezy wykonac kopie, aby zwrocic zmodyfikowany stan tablicy nienaruszając obecnego
         Table tmp = this.clone();
@@ -152,6 +159,21 @@ public class Table implements Cloneable{
 
         return clone;
     }
+
+    public Boolean checkIfSolved() {
+        if (this.table[this.table.length - 1] != 0) {
+            return false;
+        }
+        for (int i = 0; i < this.table.length - 1; i++) {
+            if (this.table[i] != i + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
     public int[] getTable() {
         return table;
