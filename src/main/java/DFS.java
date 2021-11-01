@@ -1,22 +1,26 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class DFS implements Solver {
+public class DFS extends Solver {
     private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
-    private Node root;
-    private int nodeCounter = 0;
 
     public DFS(Node root) {
-        this.root = root;
+        super(root);
     }
 
     public Node solve() {
+        this.setStartTime();
         return solveDFS(this.root);
     }
 
     private Node solveDFS(Node node) {
+        // Aktualizacja statystyk
+        this.nodesVisited ++;
+        this.updateDepthVisited(node);
+
         // Jeśli znaleziono rozwiązanie
         if (node.getCurrentState().getTable().checkIfSolved()) {
+            this.setFinishTime();
             return node;
         }
 
@@ -33,7 +37,7 @@ public class DFS implements Solver {
         }
 
         this.explored.add(node);
-        this.nodeCounter ++;
+        this.nodesProcessed++;
 
         // sprawdź rekursyjnie dzieci
         for (Direction direction : Direction.values()) {
@@ -48,9 +52,5 @@ public class DFS implements Solver {
 
         // w żadnym węźle nie znaleziono rozwiązania
         return null;
-    }
-
-    public int getNodeCounter() {
-        return nodeCounter;
     }
 }
