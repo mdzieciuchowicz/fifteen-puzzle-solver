@@ -2,6 +2,8 @@ import Exceptions.WrongMoveException;
 
 import java.io.File;
 import java.util.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Table {
     private int[] table;
@@ -215,5 +217,25 @@ public class Table {
 
     public Table clone() {
         return new Table(this.table.clone(), this.rows, this.cols, this.zeroIndex, this.zeroRow, this.zeroCol);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Table table1 = (Table) o;
+
+        return new EqualsBuilder()
+                .append(table, table1.table)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getTableAsString())
+                .toHashCode();
     }
 }
