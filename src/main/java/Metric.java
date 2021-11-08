@@ -1,2 +1,3 @@
-package PACKAGE_NAME;public interface Metric {
+public interface Metric {
+    public double calc(Node node);
 }

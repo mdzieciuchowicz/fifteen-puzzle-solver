@@ -8,7 +8,7 @@ public class App {
 
         System.out.println("hello world");
 
-        Table table = new Table("D:\\Pobrane\\sise\\4x4_08_00413.txt");
+        Table table = new Table("C:\\Users\\kczar\\Downloads\\15\\4x4_13_00001.txt");
         System.out.println(table.getTableAsString());
 
         Node root = new Node(null, table, 0, "");
@@ -30,6 +30,20 @@ public class App {
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("Na badanym węźle: " + dfs.getNodesProcessed());
+        }
+
+        Solver astr = new ASTR(root, new Hamming());
+        try {
+            Node solvingNode3 = astr.solve();
+            System.out.println(solvingNode3);
+            if (solvingNode3 != null) {
+                System.out.println("\n" + "DLA ALGORYTMU ASTR:");
+                Util.getInfoAboutResult(solvingNode3, astr);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            System.out.println("Na badanym węźle: " + astr.getNodesProcessed());
+            System.out.println("Na glebokosci : " + astr.getMaxDepthVisited());
         }
 
 

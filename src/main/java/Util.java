@@ -9,6 +9,6 @@ public class Util {
         System.out.println("Ilość przetworzonych węzłów: " + solver.getNodesProcessed());
         System.out.println("Ilość odwiedzonych węzłów: " + solver.getNodesVisited());
         System.out.println("Maksymalna odwiedzona głębokość drzewa: " + solver.getMaxDepthVisited());
-        System.out.println("Czas trwania algorytmu: " + solver.getProcessingTime().toMillis() + "ms");
+        System.out.println("Czas trwania algorytmu: " + solver.getProcessingTime().toNanos() + "ns");
     }
 }
