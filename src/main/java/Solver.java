@@ -46,4 +46,11 @@ public abstract class Solver {
             this.maxDepthVisited = currentDepth;
         }
     }
+
+    // @param solvingNode - węzeł uzyskany w wyniku metody solve()
+    // @param resultFilename - nazwa pliku do którego ma zostać zapisane rozwiązanie
+    // @param dataFilename - nazwa pliku do którego mają zostać dodatkowe informacje o procesie obliczeniowym
+    public void saveResultsToFile(Node solvingNode, String resultFilename, String dataFilename) {
+
+    }
 }

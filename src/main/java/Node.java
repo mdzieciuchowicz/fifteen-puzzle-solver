@@ -10,7 +10,12 @@ public class Node {
     private final Node parent;
     private final State currentState;
 
-    public Node(Node parent, Table table, int treeDepth, String movesHistory) {
+    public Node(Table table) {
+        this.parent = null;
+        this.currentState = new State(table, 0, "");
+    }
+
+    private Node(Node parent, Table table, int treeDepth, String movesHistory) {
         this.parent = parent;
         this.currentState = new State(table, treeDepth, movesHistory);
     }

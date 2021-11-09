@@ -1,6 +1,7 @@
 import Exceptions.WrongMoveException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -26,8 +27,42 @@ public class Table {
     }
 
     // Pobierz tablicę startową z pliku
-    public Table(String filename) {
-        readPuzzleFromFile(filename);
+    public Table(String filename) throws FileNotFoundException {
+        try {
+            File file = new File(filename);
+            Scanner sc = new Scanner(file);
+
+            this.cols = sc.nextInt();
+            this.rows = sc.nextInt();
+
+            int index = 0;
+            this.table = new int[this.cols * this.rows];
+
+            while (sc.hasNextInt()) {
+                int value = sc.nextInt();
+                this.table[index] = value;
+
+                if (this.zeroIndex == -1 && value == 0) {
+                    this.zeroIndex = index;
+                    this.zeroRow = index / this.rows;
+                    this.zeroCol = index % this.cols;
+                }
+                index ++;
+            }
+
+            // Validate if every number in range 0 - max occurred once
+            int[] tableCopy = Arrays.copyOf(this.table, this.table.length);
+            Arrays.sort(tableCopy);
+
+            for (int i = 0; i < tableCopy.length; i++) {
+                if (tableCopy[i] != i) {
+                    throw new IllegalArgumentException("Invalid numbers in file");
+                }
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.toString());
+        }
     }
 
     // Konstruktor na potrzeby clone()
@@ -59,45 +94,6 @@ public class Table {
             this.table[i] = generated.get(i);
         }
     }
-
-    public void readPuzzleFromFile(String filename){
-        try {
-            File file = new File(filename);
-            Scanner sc = new Scanner(file);
-
-            this.cols = sc.nextInt();
-            this.rows = sc.nextInt();
-
-            int index = 0;
-            this.table = new int[this.cols * this.rows];
-
-            while (sc.hasNextInt()) {
-                int value = sc.nextInt();
-                this.table[index] = value;
-
-                if (this.zeroIndex == -1 && value == 0) {
-                    this.zeroIndex = index;
-                    this.zeroRow = index / this.rows;
-                    this.zeroCol = index % this.cols;
-                }
-                index ++;
-            }
-
-            // Validate if every number in range 0 - max occurred once
-            int[] tableCopy = Arrays.copyOf(this.table, this.table.length);
-            Arrays.sort(tableCopy);
-
-            for (int i = 0; i < tableCopy.length; i++) {
-                if (tableCopy[i] != i) {
-                    throw new Exception("Invalid numbers in file");
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-
 
 
     public Table move(Direction direction) throws WrongMoveException {

@@ -11,4 +11,5 @@ public class Util {
         System.out.println("Maksymalna odwiedzona głębokość drzewa: " + solver.getMaxDepthVisited());
         System.out.println("Czas trwania algorytmu: " + solver.getProcessingTime().toNanos() + "ns");
     }
+
 }
