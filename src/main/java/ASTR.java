@@ -5,12 +5,10 @@ public class ASTR extends Solver {
     private List<Node> queue = new ArrayList<>();
     private List<Node> explored = new ArrayList<>();
     private Node optimalNode;
-    private Metric metric;
     private double bestMetricValue = 10000; //duza wartosc na razie do porownywania
 
-        public ASTR(Node root, Metric metric) {
-            super(root);
-            this.metric = metric;
+        public ASTR(Node root, String parameter) {
+            super(root, parameter);
             this.queue.add(root);
         }
 

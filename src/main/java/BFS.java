@@ -5,8 +5,8 @@ public class BFS extends Solver{
     private List<Node> queue = new ArrayList<>();       // FIFO
     private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
 
-    public BFS(Node root) {
-        super(root);
+    public BFS(Node root, String parameter) {
+        super(root, parameter);
         this.queue.add(root);
     }
 

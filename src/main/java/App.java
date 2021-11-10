@@ -1,6 +1,4 @@
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class App {
 
@@ -26,17 +24,15 @@ public class App {
                 throw new IllegalArgumentException("Liczba argumentów musi wynosić 5");
             }
 
-            // TODO: kolejność sprawdzania ruchów
-
             // Pobranie danych wejściowych
             Table table = new Table(args[2]);
             Node rootNode = new Node(table);
 
             // typ Solvera
             switch (args[0]) {
-                case "bfs":     solver = new BFS(rootNode);
-                case "dfs":     solver = new DFS(rootNode);
-                case "astr":    solver = new ASTR(rootNode, new Hamming()); //TODO: heurystyka
+                case "bfs":     solver = new BFS(rootNode, args[1]); break;
+                case "dfs":     solver = new DFS(rootNode, args[1]); break;
+                case "astr":    solver = new ASTR(rootNode, args[1]); break;
                 default:        throw new IllegalArgumentException("Podano nieprawidłowy typ algorytmu rozwiązującego");
             }
         } catch (IllegalArgumentException e) {
@@ -48,14 +44,9 @@ public class App {
         }
 
         // Użytkownik poprawnie podał parametry i został utworzony solver
-        try {
-            Node solvingNode = solver.solve();
-            // Zapis rozwiązania do pliku
-            solver.saveResultsToFile(solvingNode, args[3], args[4]);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Node solvingNode = solver.solve();
+        // Zapis rozwiązania do pliku
+        solver.saveResultsToFile(solvingNode, args[3], args[4]);
 
 
 

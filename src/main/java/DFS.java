@@ -4,8 +4,8 @@ import java.util.List;
 public class DFS extends Solver {
     private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
 
-    public DFS(Node root) {
-        super(root);
+    public DFS(Node root, String parameter) {
+        super(root, parameter);
     }
 
     public Node solve() {
