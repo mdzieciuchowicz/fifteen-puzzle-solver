@@ -25,7 +25,7 @@ public abstract class Solver {
                 break;
             }
             case "manh": {
-//                this.metric = new Manhattan(); TODO: manhattan
+                this.metric = new Manhattan();
                 break;
             }
             default: {
