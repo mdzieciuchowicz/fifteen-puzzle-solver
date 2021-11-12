@@ -29,9 +29,9 @@ public class ASTR extends Solver {
                 this.updateDepthVisited(nodeFromQueue);
 //                System.out.println("głębokość:" + nodeFromQueue.getCurrentState().getTreeDepth());
 
-                if (this.explored.contains(nodeFromQueue)) {
-                    continue;
-                }
+//                if (this.explored.contains(nodeFromQueue)) {
+//                    continue;
+//                }
 
                 double currentMetricValue = this.metric.calc(nodeFromQueue);
 
@@ -62,8 +62,12 @@ public class ASTR extends Solver {
                     for (Direction direction : Direction.values()) {
                         Node child = optimalNode.move(direction);
                         // Aby nie dawało child null gdy nie można ruszyć
-                        if (child != null && !explored.contains(child)) {
-                            this.queue.add(optimalNode.move(direction));
+                        if (child != null) {
+                            if (!explored.contains(child)) {
+                                this.queue.add(optimalNode.move(direction));
+                            } else {
+                                this.nodesVisited++;
+                            }
                         }
                     }
                 }

@@ -99,7 +99,18 @@ public abstract class Solver {
                 dataWriter.println(this.getMaxDepthVisited());
 
                 // TODO: (liczba rzeczywista z dokładnością do 3 miejsc po przecinku): czas trwania procesu obliczeniowego w milisekundach.
-                dataWriter.println(this.getProcessingTime().toNanos());
+                dataWriter.println(
+                        String.format("%.3f", (this.getProcessingTime().toNanos() / 1000000f))
+                );
+                dataWriter.println(
+                        this.getProcessingTime().toMillis()
+                );
+                dataWriter.println(
+                        String.format("%.3f", (float)this.getProcessingTime().toMillis())
+                );
+                dataWriter.println(
+                        String.format("%.3f", (float)this.getProcessingTime().toNanos())
+                );
             }
 
             resultWriter.close();

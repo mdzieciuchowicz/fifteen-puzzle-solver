@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DFS extends Solver {
-    private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
+//    private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
 
     public DFS(Node root, String parameter) {
         super(root, parameter);
@@ -25,7 +25,8 @@ public class DFS extends Solver {
         }
 
         // Sprawdź czy wystąpiło
-        // TODO: zostawić explored czy nie?
+        // Nie może tego być, bo jeśli znajdzie węzeł na drodze do rozwiązania, lecz braknie mu ruchów do maksymalnej
+        // głębokości to oznaczy go jako explored i gdy następnym razem gdy do niego dojdzie to go nie przetworzy
 //        if (this.explored.contains(node)) {
 //            return null;
 //        }
@@ -36,7 +37,7 @@ public class DFS extends Solver {
             return null;
         }
 
-        this.explored.add(node);
+//        this.explored.add(node);
         this.nodesProcessed++;
 
         // sprawdź rekursyjnie dzieci
