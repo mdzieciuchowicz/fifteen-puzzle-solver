@@ -1,6 +1,6 @@
 public class Hamming implements Metric{
     @Override
-    public double calc(Node node) {
+    public int calc(Node node) {
         int distance = 0;
 
         if (node.getCurrentState().getTable().getTable()[node.getCurrentState().getTable().getTable().length - 1] != 0) {

@@ -9,6 +9,7 @@ public class Node {
     private List<Node> children = new ArrayList<>();
     private final Node parent;
     private final State currentState;
+    private int nodeValue;
 
     public Node(Table table) {
         this.parent = null;
@@ -55,6 +56,15 @@ public class Node {
     public State getCurrentState() {
         return currentState;
     }
+
+    public int getNodeValue() {
+        return nodeValue;
+    }
+
+    public void calcAndSetNodeValue(int nodeValue) {
+        this.nodeValue = nodeValue + this.getCurrentState().getTreeDepth();
+    }
+
 
 
     // To będzie wykorzystywane do porównywania nodów - czy node o innym adresie w pamięci nie wystąpił już wcześniej w algorytmie -

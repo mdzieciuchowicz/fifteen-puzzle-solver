@@ -1,6 +1,6 @@
 public class Manhattan implements Metric{
     @Override
-    public double calc(Node node) {
+    public int calc(Node node) {
         int distance = 0;
         int x, y, goalX, goalY;
 

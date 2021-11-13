@@ -2,85 +2,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ASTR extends Solver {
-    private List<Node> queue = new ArrayList<>();
-    private List<Node> explored = new ArrayList<>();
+    private List<Node> open = new ArrayList<>();
+    private List<Node> closed = new ArrayList<>();
     private Node optimalNode;
-    private double bestMetricValue = 10000; //duza wartosc na razie do porownywania
+    private double bestNodeValue = Integer.MAX_VALUE;
 
-        public ASTR(Node root, String parameter) {
-            super(root, parameter);
-            this.queue.add(root);
+
+    public ASTR(Node root, String parameter) {
+        super(root, parameter);
+        root.calcAndSetNodeValue(this.metric.calc(root));
+        this.open.add(root);
+    }
+
+    @Override
+    public Node solve() {
+        if (this.nodesProcessed == 0) {
+            this.setStartTime();
         }
 
-        @Override
-        public Node solve() {
-            // Ustaw moment początku przetwarzania
-            if (this.nodesProcessed == 0) {
-//                System.out.println("zaczynam");
-                this.setStartTime();
+        List<Node> copyOfQueue = new ArrayList<>(this.open);
+        for (Node nodeFromQueue : copyOfQueue) {
+            this.nodesVisited++;
+            this.updateDepthVisited(nodeFromQueue);
+
+            if (nodeFromQueue.getCurrentState().getTable().checkIfSolved()) {
+                this.setFinishTime();
+                return nodeFromQueue;
             }
 
-            List<Node> copyOfQueue = new ArrayList<>(this.queue);
-
-            for (Node nodeFromQueue : copyOfQueue) {
-                // Jeśli był już badany wcześniej - idź dalej
-
-                this.nodesVisited++;
-                this.updateDepthVisited(nodeFromQueue);
-//                System.out.println("głębokość:" + nodeFromQueue.getCurrentState().getTreeDepth());
-
-//                if (this.explored.contains(nodeFromQueue)) {
-//                    continue;
-//                }
-
-                double currentMetricValue = this.metric.calc(nodeFromQueue);
-
-//                System.out.println("metryka najlepsza: " + this.bestMetricValue);
-//                System.out.println("metryka aktualna: " + currentMetricValue);
-//                System.out.println(queue.toString());
-
-                if (nodeFromQueue.getCurrentState().getTable().checkIfSolved()) {
-                    this.setFinishTime();
-//                    System.out.println("kończe");
-                    return nodeFromQueue;
-                }
-
-                if(currentMetricValue <= this.bestMetricValue) {
-                    this.optimalNode = nodeFromQueue;
-                    this.bestMetricValue = currentMetricValue;
-                }
-
-                this.queue.remove(nodeFromQueue);
-
-                this.nodesProcessed++;
+            if(nodeFromQueue.getNodeValue() <= this.bestNodeValue) {
+                this.optimalNode = nodeFromQueue;
+                this.bestNodeValue = nodeFromQueue.getNodeValue();
             }
-            if(this.queue.isEmpty()) {
-//                System.out.println("siema");
-                if (!this.explored.contains(optimalNode)) {
-                    this.explored.add(optimalNode);
-                    // Dla węzła utwórz dzieci robiąc ruch w każdą stronę
-                    for (Direction direction : Direction.values()) {
-                        Node child = optimalNode.move(direction);
-                        // Aby nie dawało child null gdy nie można ruszyć
-                        if (child != null) {
-                            if (!explored.contains(child)) {
-                                this.queue.add(optimalNode.move(direction));
-                            } else {
-                                this.nodesVisited++;
-                            }
-                        }
-                    }
-                }
-                else {
-//                    System.out.println("jestem tu");
-//                    System.out.println(this.optimalNode);
-                    this.explored.remove(optimalNode.getParent());
-                    this.optimalNode = optimalNode.getParent();
-                    this.bestMetricValue = this.metric.calc(optimalNode);
-//                    System.out.println(this.optimalNode);
-                }
-            }
-            return solve();
         }
+
+        //węzeł optymalny który bedzie miał zaraz dzieci dodajemy do closed
+        closed.add(optimalNode);
+        open.remove(optimalNode);
+        this.nodesProcessed++;
+
+        for (Direction direction : Direction.values()) {
+            Node child = optimalNode.move(direction);
+            if (closed.contains(child)) continue;
+            //nie dodajemy dziecka do open jeśli już tam jest i nie liczymy drugi raz metryki
+            else if (child != null && !open.contains(child)) {
+                this.open.add(child);
+                child.calcAndSetNodeValue(this.metric.calc(child));
+            }
+        }
+
+        this.bestNodeValue = open.get(0).getNodeValue(); //ustawiamy na pierwszy element kolejki
+        return solve();
+    }
 }
 

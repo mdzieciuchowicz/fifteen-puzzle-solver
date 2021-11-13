@@ -1,3 +1,3 @@
 public interface Metric {
-    public double calc(Node node);
+    public int calc(Node node);
 }
