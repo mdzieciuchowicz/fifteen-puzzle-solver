@@ -234,4 +234,14 @@ public class Table {
                 .append(getTableAsString())
                 .toHashCode();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < table.length; i++ ) {
+            builder.append(table[i]);
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
 }

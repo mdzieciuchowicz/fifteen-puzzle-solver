@@ -19,7 +19,7 @@ public class DFS extends Solver {
         this.updateDepthVisited(node);
 
         // Jeśli znaleziono rozwiązanie
-        if (node.getCurrentState().getTable().checkIfSolved()) {
+        if (node.getTable().checkIfSolved()) {
             this.setFinishTime();
             return node;
         }
@@ -33,7 +33,7 @@ public class DFS extends Solver {
 
         // Node jeszcze nie wystąpił
         // Ograniczenie głębokości szukania drzewa
-        if (node.getCurrentState().getTreeDepth() >= 20) {
+        if (node.getTreeDepth() >= 20) {
             return null;
         }
 

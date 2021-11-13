@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BFS extends Solver{
-    private List<Node> queue = new ArrayList<>();       // FIFO
-    private List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
+    private final List<Node> queue = new ArrayList<>();       // FIFO
+    private final List<Node> explored = new ArrayList<>();    // Lista zbadanych już nodów - zapobiega nieskończonej pętli
 
     public BFS(Node root, String parameter) {
         super(root, parameter);
@@ -38,7 +38,7 @@ public class BFS extends Solver{
             this.nodesVisited++;
             this.updateDepthVisited(nodeFromQueue);
 
-            if (nodeFromQueue.getCurrentState().getTable().checkIfSolved()) {
+            if (nodeFromQueue.getTable().checkIfSolved()) {
                 this.setFinishTime();
                 return nodeFromQueue;
             }

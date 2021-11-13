@@ -70,7 +70,7 @@ public abstract class Solver {
     }
 
     public void updateDepthVisited(Node node) {
-        int currentDepth = node.getCurrentState().getTreeDepth();
+        int currentDepth = node.getTreeDepth();
         if (currentDepth > this.maxDepthVisited) {
             this.maxDepthVisited = currentDepth;
         }
@@ -89,17 +89,17 @@ public abstract class Solver {
                 dataWriter.println("-1");
             } else {
                 // Zapis rozwiązania
-                resultWriter.println(solvingNode.getCurrentState().getTreeDepth());
-                resultWriter.println(solvingNode.getCurrentState().getMovesHistory());
+                resultWriter.println(solvingNode.getTreeDepth());
+                resultWriter.println(solvingNode.getMovesHistory());
 
                 // Zapis dodatkowych danych
-                dataWriter.println(solvingNode.getCurrentState().getTreeDepth());
+                dataWriter.println(solvingNode.getTreeDepth());
                 dataWriter.println(this.getNodesVisited());
                 dataWriter.println(this.getNodesProcessed());
                 dataWriter.println(this.getMaxDepthVisited());
 
                 dataWriter.println(
-                        String.format("%.3f", (this.getProcessingTime().toNanos() / 1000000f))
+                        String.format("%.3f", ((float)(this.getProcessingTime().toNanos()) / 1000000f))
                 );
             }
 

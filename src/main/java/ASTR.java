@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ASTR extends Solver {
-    private List<Node> open = new ArrayList<>();
-    private List<Node> closed = new ArrayList<>();
+    private final List<Node> open = new ArrayList<>();
+    private final List<Node> closed = new ArrayList<>();
     private Node optimalNode;
     private double bestNodeValue = Integer.MAX_VALUE;
 
@@ -25,7 +25,7 @@ public class ASTR extends Solver {
             this.nodesVisited++;
             this.updateDepthVisited(nodeFromQueue);
 
-            if (nodeFromQueue.getCurrentState().getTable().checkIfSolved()) {
+            if (nodeFromQueue.getTable().checkIfSolved()) {
                 this.setFinishTime();
                 return nodeFromQueue;
             }
