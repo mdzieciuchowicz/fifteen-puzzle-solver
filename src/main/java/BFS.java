@@ -55,7 +55,7 @@ public class BFS extends Solver{
             this.nodesProcessed++;
 
             // Dla węzła utwórz dzieci robiąc ruch w każdą stronę
-            for (Direction direction : Direction.values()) {
+            for (Direction direction : this.directionOrder) {
                 Node child = nodeFromQueue.move(direction);
                 // Aby nie dawało child null gdy nie można ruszyć
                 if (child != null) {

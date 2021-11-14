@@ -41,7 +41,7 @@ public class DFS extends Solver {
         this.nodesProcessed++;
 
         // sprawdź rekursyjnie dzieci
-        for (Direction direction : Direction.values()) {
+        for (Direction direction : this.directionOrder) {
             Node child = node.move(direction);
             if (child != null) {
                 Node res = solveDFS(child);
