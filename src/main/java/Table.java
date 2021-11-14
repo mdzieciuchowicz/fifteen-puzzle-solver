@@ -2,9 +2,10 @@ import Exceptions.WrongMoveException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.Scanner;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Table {
     private int[] table;
@@ -16,15 +17,6 @@ public class Table {
     private int zeroRow = -1;
     private int zeroCol = -1;
 
-
-
-    // Wygeneruj tablicę startową
-    public Table(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
-
-        this.generatePuzzle();
-    }
 
     // Pobierz tablicę startową z pliku
     public Table(String filename) throws FileNotFoundException {
@@ -76,76 +68,64 @@ public class Table {
         this.zeroCol = zeroCol;
     }
 
-    public void generatePuzzle() {
-        int max = this.rows * this.cols - 1;
-        List<Integer> generated = new ArrayList<>();
-        for (int i = 0; i <= max; i++) {
-            generated.add(i);
-        }
-        Collections.shuffle(generated);
-
-        this.table = new int[rows * cols];
-        for (int i = 0; i <= max; i++) {
-            if (this.zeroIndex == -1 && generated.get(i) == 0) {
-                this.zeroIndex = i;
-                this.zeroRow = i / this.rows;
-                this.zeroCol = i % this.cols;
-            }
-            this.table[i] = generated.get(i);
-        }
-    }
-
 
     public Table move(Direction direction) throws WrongMoveException {
         // Nalezy wykonac kopie, aby zwrocic zmodyfikowany stan tablicy nienaruszając obecnego
         Table before = this.clone();
 
-        if (direction == Direction.U) {
-            if (this.zeroRow == 0) {
-                throw new WrongMoveException("Cannot move up");
-            } else {
-                this.table[zeroIndex] = this.table[this.zeroIndex - this.cols];
-                this.table[this.zeroIndex - this.cols] = 0;
+        switch (direction) {
+            case U: {
+                if (this.zeroRow == 0) {
+                    throw new WrongMoveException("Cannot move up");
+                } else {
+                    this.table[zeroIndex] = this.table[this.zeroIndex - this.cols];
+                    this.table[this.zeroIndex - this.cols] = 0;
 
-                this.zeroIndex -= this.cols;
-                this.zeroRow -= 1;
+                    this.zeroIndex -= this.cols;
+                    this.zeroRow -= 1;
+                }
+                break;
             }
-        }
 
-        if (direction == Direction.D) {
-            if (this.zeroRow == (this.rows - 1)) {
-                throw new WrongMoveException("Cannot move down");
-            } else {
-                this.table[zeroIndex] = this.table[this.zeroIndex + this.cols];
-                this.table[this.zeroIndex + this.cols] = 0;
+            case D: {
+                if (this.zeroRow == (this.rows - 1)) {
+                    throw new WrongMoveException("Cannot move down");
+                } else {
+                    this.table[zeroIndex] = this.table[this.zeroIndex + this.cols];
+                    this.table[this.zeroIndex + this.cols] = 0;
 
-                this.zeroIndex += this.cols;
-                this.zeroRow += 1;
+                    this.zeroIndex += this.cols;
+                    this.zeroRow += 1;
+                }
+                break;
             }
-        }
 
-        if (direction == Direction.L) {
-            if (this.zeroCol == 0) {
-                throw new WrongMoveException("Cannot move left");
-            } else {
-                this.table[zeroIndex] = this.table[this.zeroIndex - 1];
-                this.table[this.zeroIndex - 1] = 0;
+            case L: {
+                if (this.zeroCol == 0) {
+                    throw new WrongMoveException("Cannot move left");
+                } else {
+                    this.table[zeroIndex] = this.table[this.zeroIndex - 1];
+                    this.table[this.zeroIndex - 1] = 0;
 
-                this.zeroIndex -= 1;
-                this.zeroCol -= 1;
+                    this.zeroIndex -= 1;
+                    this.zeroCol -= 1;
+                }
+                break;
             }
-        }
 
-        if (direction == Direction.R) {
-            if (this.zeroCol == (this.cols - 1)) {
-                throw new WrongMoveException("Cannot move right");
-            } else {
-                this.table[zeroIndex] = this.table[this.zeroIndex + 1];
-                this.table[this.zeroIndex + 1] = 0;
+            case R: {
+                if (this.zeroCol == (this.cols - 1)) {
+                    throw new WrongMoveException("Cannot move right");
+                } else {
+                    this.table[zeroIndex] = this.table[this.zeroIndex + 1];
+                    this.table[this.zeroIndex + 1] = 0;
 
-                this.zeroIndex += 1;
-                this.zeroCol += 1;
+                    this.zeroIndex += 1;
+                    this.zeroCol += 1;
+                }
+                break;
             }
+
         }
 
         // Przywróć poprzedni stan tablicy i zwróć zapisaną kopię
@@ -154,10 +134,6 @@ public class Table {
         this.zeroIndex = before.zeroIndex;
         this.zeroCol = before.zeroCol;
         this.zeroRow = before.zeroRow;
-//
-//        System.out.println("ZeroIndex: " + this.getZeroIndex());
-//        System.out.println("ZeroCol: " + this.getZeroCol());
-//        System.out.println("ZeroRow: " + this.getZeroRow());
 
         return after;
     }
@@ -175,32 +151,8 @@ public class Table {
     }
 
 
-
-
     public int[] getTable() {
         return table;
-    }
-
-    public int getZeroIndex() {
-        return zeroIndex;
-    }
-
-    public int getZeroRow() {
-        return zeroRow;
-    }
-
-    public int getZeroCol() {
-        return zeroCol;
-    }
-
-    public String getTableAsString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i : this.table) {
-            sb.append(i);
-            sb.append(", ");
-        }
-
-        return sb.toString();
     }
 
     public int getRows() {
@@ -226,22 +178,5 @@ public class Table {
         return new EqualsBuilder()
                 .append(table, table1.table)
                 .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(getTableAsString())
-                .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < table.length; i++ ) {
-            builder.append(table[i]);
-            builder.append(" ");
-        }
-        return builder.toString();
     }
 }

@@ -1,27 +1,23 @@
 import Exceptions.WrongMoveException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
     private final List<Node> children = new ArrayList<>();
-    private final Node parent;
     private int nodeValue;
     private final Table table;
     private final int treeDepth;
     private final String movesHistory;
 
     public Node(Table table) {
-        this.parent = null;
         this.table = table;
         this.treeDepth = 0;
         this.movesHistory = "";
     }
 
-    private Node(Node parent, Table table, int treeDepth, String movesHistory) {
-        this.parent = parent;
+    private Node(Table table, int treeDepth, String movesHistory) {
         this.table = table;
         this.treeDepth = treeDepth;
         this.movesHistory = movesHistory;
@@ -33,21 +29,13 @@ public class Node {
             Table afterMove = this.getTable().move(direction);
             String newHistory = this.getMovesHistory() + direction.toString();
 
-            Node child = new Node(this, afterMove, this.getTreeDepth() + 1, newHistory);
+            Node child = new Node(afterMove, this.getTreeDepth() + 1, newHistory);
             this.children.add(child);
             return child;
 
         } catch (WrongMoveException e) {
             return null;
         }
-    }
-
-    public List<Node> getChildren() {
-        return children;
-    }
-
-    public Node getParent() {
-        return parent;
     }
 
     public int getNodeValue() {
@@ -83,12 +71,5 @@ public class Node {
         return new EqualsBuilder()
                 .append(this.getTable(), node.getTable())
                 .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(this.getTable())
-                .toHashCode();
     }
 }
